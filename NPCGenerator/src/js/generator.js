@@ -1,17 +1,10 @@
 // same as previous lab
 import './general';
-// without this I get an error at runtime.  babel 7 and preset env.
-const regeneratorRuntime = require("regenerator-runtime");
+import { Chart, registerables } from 'chart.js';
 
-// my ES6 modules export functions that you need
-// parseForecast is the ONLY export (default) from weatherParsing.js
-import parseForecast from './weatherParsing';
-// getWeekday and getDate are named exports (functions) from dates.js
-import {getWeekday, getDate} from './dates';
-
-
- class Weather{
+ class NPCGenerator{
   constructor() {
+    Chart.register(...registerables);
     this.npc = {
       //Race
       race: "",
@@ -40,7 +33,10 @@ import {getWeekday, getDate} from './dates';
     this.raceURL = "https://www.dnd5eapi.co/api/races/";
     //Stores the Race Info
     this.raceData;
+    this.$buttonClick = 0;
+    this.$chartVar;
     this.$form = document.querySelector('#GenerateForm');
+    this.$statCanvas = document.querySelector('#statChart');
     this.generate = this.generate.bind(this);
     this.$form.addEventListener("Generate",this.generate);
     this.renderNPC = this.renderNPC.bind(this);
@@ -253,6 +249,66 @@ renderNPC(raceDataInput,classDataInput){
   const raceHTML = this.renderNPCRaceInfo(raceDataInput);
   const combinedHTML = this.combineHtml(raceHTML,classHTML)
   document.getElementById("NPCAREA").innerHTML = combinedHTML;
+  var chartData;
+  var statChartConst;
+  var buttonClicks = 0;
+  
+  //document.getElementById("chartArea").innerHTML = '<canvas id="statChart"></canvas>';
+  chartData = {
+    datasets: [{
+        data: [this.npc.str, this.npc.dex, this.npc.con,this.npc.int,this.npc.wis,this.npc.cha], // the chart expects the values in an array in this order
+        backgroundColor:[
+          'rgba(255, 0, 0, 0.6)',
+          'rgba(255, 244, 79, 0.6)',
+          'rgba(0, 255, 0, 0.6)',
+          'rgba(0, 0, 255, 0.6)',
+          'rgba(106,13,173, 0.6)',
+          'rgba(251, 198, 207, 0.6)'
+          
+
+        ],
+        borderColor: [
+          'white',
+          'white',
+          'white',
+          'white',
+          'white',
+          'white'
+        ],
+        borderWidth: 1
+    }],
+    labels: [
+        'strength',
+        'dexterity',
+        'constitution',
+        'intelligence',
+        'wisdom',
+        'charisma'
+
+    ]
+  };
+ 
+
+if (this.$buttonClick > 0){
+  console.log()
+  this.$chartVar.data.datasets[0].data[0] = this.npc.str
+  this.$chartVar.data.datasets[0].data[1] = this.npc.dex
+  this.$chartVar.data.datasets[0].data[2] = this.npc.con
+  this.$chartVar.data.datasets[0].data[3] = this.npc.int
+  this.$chartVar.data.datasets[0].data[4] = this.npc.wis
+  this.$chartVar.data.datasets[0].data[5] = this.npc.cha
+  this.$chartVar.update();
+}
+if (this.$buttonClick == 0){
+  this.$chartVar = 
+  new Chart(this.$statCanvas, {
+    type: 'pie',
+    data: chartData,
+    options: {}
+  });
+  this.$buttonClick = this.$buttonClick +1;
+}
+
 }
 renderNPCClassInfo(classInfo){
   var profList = "";
@@ -322,16 +378,19 @@ lang = lang.substring(0,lang.length -2);
 traits = traits.substring(0,traits.length -2);
 
 
+
+
+
+
+
+
+
+
+
+
   
 
   return `<div>
-                <h2>Stats:</h2>
-                <h3>Strength:${this.npc.str}</h3>
-                <h3>Dexterity:${this.npc.dex}</h3>
-                <h3>constitution:${this.npc.con}</h3>
-                <h3>Intelligence:${this.npc.int}</h3>
-                <h3>Wisdom:${this.npc.wis}</h3>
-                <h3>Charism:${this.npc.cha}</h3>
                 <h2>Race:${raceInfo.name}</h2>
                 <h2>Size:${raceInfo.size}</h2>
                 <h2>Racial Proficencies:${raceProf}</h2>
@@ -352,4 +411,4 @@ combineHtml(HTMLOne,HTMLTwo){
 
 
  }
- window.onload = () => {new Weather();}
+ window.onload = () => {new NPCGenerator();}
