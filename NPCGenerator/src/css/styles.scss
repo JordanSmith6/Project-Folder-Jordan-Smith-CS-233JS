@@ -40,65 +40,6 @@ body {
     border-radius: 5px;
 }
 
-.weather-list {
-  margin: 20px 0;
-}
-
-.weather-list-item {
-  min-width: 100px;
-  margin: 0 10px;
-  padding: 10px;
-  border: 2px solid #000;
-  border-radius: 20px;
-  background-color: #fff;
-  text-align: center;
-  cursor: pointer;
-}
-
-  .weather-list-item :first-child {
-    margin-left: 0;
-  }
-
-  .weather-list-item :last-child {
-    margin-right: 0;
-  }
-
-  .weather-list-item > h3 {
-    font-weight: normal;
-  }
-
-.current-day {
-  box-sizing: border-box;
-  padding: 20px;
-  padding-top: 0;
-  border: 2px solid #000;
-  border-radius: 20px;
-  background-color: #fff;
-}
-
-.details {
-  justify-content: flex-start;
-}
-  .details > div {
-    padding-left: 20px;
-  }
-
-  .details > div :first-child {
-    padding-left: 0;
-  }
-
-.weather {
-  font-size: 30px;
-  line-height: 1.4;
-}
-    
-  .weather p {
-      margin: 0;
-  }
-
-  .weather img {
-      vertical-align: middle;
-  }
 
   .chart-area {
     max-width: 20%;
